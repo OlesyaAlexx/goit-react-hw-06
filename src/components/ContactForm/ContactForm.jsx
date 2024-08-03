@@ -1,23 +1,22 @@
 import { Form, Formik, Field, ErrorMessage } from "formik";
-import { nanoid } from "nanoid";
+import { nanoid } from "@reduxjs/toolkit";
 import * as Yup from "yup";
 import style from "./ContactForm.module.css";
+import { useDispatch } from "react-redux";
+import { addContact } from "../../redux/contactsSlice";
 
 // Функція ContactForm для додавання нового контакту
-// приймає пропс addContact і додає новий контакт
-const ContactForm = ({ addContact }) => {
+
+const ContactForm = () => {
+  const dispatch = useDispatch();
+  const initialValues = { name: "", number: "" };
   // Функція -обробник відправки форми
-  //values це значення введені у форму
-  //actions це для скидання форми після відправки
-  const handleSubmit = (values, actions) => {
+  const handleSubmit = (values, options) => {
     // Додаємо новий контакт, генеруємо унікальний id за допомогою nanoid
-    addContact({
-      id: nanoid(),
-      name: values.name,
-      number: values.number,
-    });
+    const newItem = { name: values.name, number: values.number, id: nanoid() };
+    dispatch(addContact(newItem));
     // Скидаємо форму після відправки
-    actions.resetForm();
+    options.resetForm();
   };
   // Схема валідації для форми за допомогою Yup
   const ContactSchema = Yup.object().shape({
@@ -35,7 +34,7 @@ const ContactForm = ({ addContact }) => {
   return (
     // Налаштування Formik з початковими значеннями, обробником відправки та схемою валідації
     <Formik
-      initialValues={{ name: "", number: "" }}
+      initialValues={initialValues}
       onSubmit={handleSubmit}
       validationSchema={ContactSchema}
     >

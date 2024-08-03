@@ -1,29 +1,39 @@
-import styles from "./Contact.module.css";
-
 //Імпортуємо іконки з бібліотеки react-icons для використання у компоненті.
+import styles from "./Contact.module.css";
 import { FaPhone } from "react-icons/fa6";
 import { RiContactsFill } from "react-icons/ri";
+import { useDispatch } from "react-redux";
+import { deleteContact } from "../../redux/contactsSlice";
 
-//Функція для створення розмітки компонента
-//data це об'єкт, що містить дані контакту (id, name, number).
-//onDelete це фnpm run devункція-обробник для видалення контакту.
-const Contact = ({ data: { id, name, number }, onDelete }) => {
+// Функція для створення розмітки компонента
+const Contact = ({ contact }) => {
+  const dispatch = useDispatch();
+
+  // Функція для видаленя  контакту
+  const handleDeleteContact = (contactId) => {
+    dispatch(deleteContact(contactId));
+  };
+
   return (
     <div className={styles.containerContact}>
       <div className={styles.info}>
         <p>
           <RiContactsFill className={styles.icon} />
-          {name}
+          {contact.name}
         </p>
         <p>
           <FaPhone className={styles.icon} />
-          {number}
+          {contact.number}
         </p>
       </div>
-      <button className={styles.button} onClick={() => onDelete(id)}>
+      <button
+        className={styles.button}
+        onClick={() => handleDeleteContact(contact.id)}
+      >
         Delete
       </button>
     </div>
   );
 };
+
 export default Contact;
