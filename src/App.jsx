@@ -6,7 +6,6 @@ import SearchBox from "./components/SearchBox/SearchBox";
 import ContactList from "./components/ContactList/ContactList";
 
 // Створюємо головний компонент App
-
 const App = () => {
   //Створюємо розмітку компонентів
   return (
